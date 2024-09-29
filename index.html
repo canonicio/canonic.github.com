@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>David Thomson - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:400,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+  <style>
+    /* Add custom styles for mobile responsiveness */
+    @media (max-width: 768px) {
+      h1, h2, h3 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .container {
+        padding: 0 1rem;
+      }
+      .grid-cols-12 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+      .grid-cols-10 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+      .grid-cols-2, .grid-cols-3 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+      .min-h-screen {
+        min-height: auto;
+      }
+      .text-[2.8rem] {
+        font-size: 2rem;
+      }
+      .text-[26px] {
+        font-size: 1.5rem;
+      }
+      .text-lg {
+        font-size: 1rem;
+      }
+      .text-2xl {
+        font-size: 1.25rem;
+      }
+      .mb-[60px], .mb-[30px], .mb-12, .mb-16, .mb-8, .mb-10 {
+        margin-bottom: 1rem;
+      }
+      .px-6 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      .gap-8, .gap-12, .gap-16, .gap-20 {
+        gap: 1rem;
+      }
+      .aspect-[4/3] {
+        aspect-ratio: 4 / 3;
+      }
+      /* Adjust h1 and h2 to be 75% of their original size */
+      h1 {
+        font-size: calc(2.8rem * 0.75); /* Adjust this value based on your original size */
+        grid-column: span 12; /* Make h1 span full width */
+      }
+      h2 {
+        font-size: calc(2.8rem * 0.75); /* Adjust this value based on your original size */
+        grid-column: span 12; /* Make h2 span full width */
+      }
+    }
+
+    /* Add these new styles for desktop */
+    @media (min-width: 769px) {
+      h1, h2 {
+        margin-bottom: 1em; /* Add significant bottom margin */
+        line-height: 1.4; /* Increase line height for better spacing */
+      }
+
+      h1 {
+        font-size: 2.8rem; /* Adjust if needed */
+        line-height: 1.5; /* Further increase line height for h1 */
+      }
+
+      h2 {
+        font-size: 2.5rem; /* Adjust if needed */
+      }
+    }
+
+/* Add these styles to your existing CSS */
+
+    /* Global styles */
+    h1, h2, h3 {
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    /* Header styles */
+    header h1 h2{
+      font-size: 2.8rem;
+      line-height: 1.2; /* Adjust this value for normal line height */
+      margin-bottom: 1.5rem;
+    }
+
+    /* Media query for mobile devices */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: calc(2.8rem * 0.75); /* 75% of the original size for mobile */
+        line-height: 1.3; /* Slightly increased line height for better readability on mobile */
+      }
+    }
+    /* Add these styles to your existing <style> tag or CSS file */
+
+    /* Specific styles for the h1 in the header */
+    header .custom-h1 {
+      line-height: 1.2 !important;
+      max-width: 100%;
+    }
+
+    /* Media query for larger screens */
+    @media (min-width: 768px) {
+      header .custom-h1 {
+        font-size: 2.8rem !important;
+        line-height: 1.3 !important;
+      }
+    }
+
+
+    /* Ensure the custom line height is applied on all screen sizes */
+    @media (min-width: 768px) {
+      .custom-paragraph {
+        line-height: 1.35 !important;
+      }
+    }
+    .custom-centered-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border: 1px solid white;
+  color: white;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  width: 100%;
+  max-width: 220px;
+}
+
+.custom-centered-button:hover {
+  background-color: white;
+  color: #3A5976;
+}
+
+.custom-centered-button span:first-child {
+  margin-right: auto;
+}
+
+.custom-centered-button .arrow-icon {
+  margin-left: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .custom-centered-button {
+    width: auto;
+  }
+}
+ /* Add these new styles for the header and hamburger menu */
+     .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(26, 38, 51, 0.9);
+        padding: 1rem;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+    }
+
+    .header img {
+        height: 2.75rem; /* Adjust this value as needed */
+        width: auto;
+        margin-right: .5rem;
+    }
+     /* Desktop styles */
+     .desktop-text {
+        display: none;
+    }
+
+    .mobile-text {
+        display: block;
+    }
+
+    /* Media query for desktop */
+    @media (min-width: 768px) {
+        .desktop-text {
+            display: block;
+        }
+
+        .mobile-text {
+            display: none;
+        }
+    }
+
+        .menu-toggle {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .menu-toggle span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: white;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .menu-toggle span:nth-child(1) { top: 0px; }
+        .menu-toggle span:nth-child(2) { top: 9px; }
+        .menu-toggle span:nth-child(3) { top: 18px; }
+
+        .menu-toggle.active span:nth-child(1) {
+            top: 9px;
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            top: 9px;
+            transform: rotate(-45deg);
+        }
+
+        .menu {
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 38, 51, 0.95);
+            transition: top 0.3s ease;
+            z-index: 1001;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .menu.active { top: 0; }
+
+        .menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: white;
+        padding: 0.25rem 0;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: right;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: color 0.1s ease, opacity 0.1s ease, transform 0.1s ease;
+    }
+
+        .menu-item svg {
+            transition: transform 0.2s ease;
+        }
+
+        .menu-item:hover svg {
+            transform: translateX(3px);
+        }
+
+        .menu.active .menu-item {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Add staggered delay for each menu item */
+        .menu.active .menu-item:nth-child(1) { transition-delay: 0.02s; }
+        .menu.active .menu-item:nth-child(2) { transition-delay: 0.04s; }
+        .menu.active .menu-item:nth-child(3) { transition-delay: 0.06s; }
+        .menu.active .menu-item:nth-child(4) { transition-delay: 0.08s; }
+        .menu.active .menu-item:nth-child(5) { transition-delay: 0.10s; }
+        .menu.active .menu-item:nth-child(6) { transition-delay: 0.12s; }
+        .menu.active .menu-item:nth-child(7) { transition-delay: 0.14s; }
+        .menu.active .menu-item:nth-child(8) { transition-delay: 0.16s; }
+        .menu.active .menu-item:nth-child(9) { transition-delay: 0.18s; }
+
+
+        .menu-close {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1002;
+            align-self: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .menu-close span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: white;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .menu-close span:nth-child(1) {
+            top: 9px;
+            transform: rotate(45deg);
+        }
+
+        .menu-close span:nth-child(2) {
+            top: 9px;
+            transform: rotate(-45deg);
+        }
+        .menu {
+        position: fixed;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(26, 38, 51, 0.95);
+        transition: top 0.3s ease;
+        z-index: 1001;
+        padding: 2rem;
+        overflow-y: auto;
+    }
+
+    .menu.active { top: 0; }
+
+    .menu-items {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .menu-item {
+        display: block;
+        color: white;
+        padding: 0.5rem 0;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: right;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .menu-item:hover { color: #A7DAE9; }
+
+    .menu.active .menu-item {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .menu.active .menu-item:nth-child(1) { transition-delay: 0.1s; }
+    .menu.active .menu-item:nth-child(2) { transition-delay: 0.2s; }
+    .menu.active .menu-item:nth-child(3) { transition-delay: 0.3s; }
+    .menu.active .menu-item:nth-child(4) { transition-delay: 0.4s; }
+    .menu.active .menu-item:nth-child(5) { transition-delay: 0.5s; }
+    .menu.active .menu-item:nth-child(6) { transition-delay: 0.6s; }
+    .menu.active .menu-item:nth-child(7) { transition-delay: 0.7s; }
+    .menu.active .menu-item:nth-child(8) { transition-delay: 0.8s; }
+    .menu.active .menu-item:nth-child(9) { transition-delay: 0.9s; }
+
+    /* Custom styles for h2 */
+    .custom-h2 {
+        line-height: 1.2;
+        max-width: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .custom-h2 {
+            font-size: 2.8rem !important;
+            line-height: 1.3 !important;
+        }
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .menu .social-icons {
+        animation: slideDown 0.5s ease-out;
+        animation-delay: 0.5s;
+        animation-fill-mode: both;
+    }
+
+  </style>
+</head>
+<body class="bg-[#23313F] text-white">
+    <header class="header">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="images/dt-logo.png" alt="DT Logo" class="h-8 mr-4">
+                <div id="header-text" class="opacity-0 transition-opacity duration-300">
+                    <p class="text-transparent bg-clip-text bg-gradient-to-b from-[#A7DAE9] to-[#97BADA] font-bold text-lg desktop-text">Hello, I'm David Thomson, a strategic product executive</p>
+                    <p class="text-transparent bg-clip-text bg-gradient-to-b from-[#A7DAE9] to-[#97BADA] font-bold text-lg mobile-text">A strategic product executive</p>
+                </div>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="menu" id="menu">
+        <div class="container mx-auto flex flex-col items-end">
+            <div class="menu-close" id="menu-close">
+                <span></span>
+                <span></span>
+            </div>
+            <div class="menu-items">
+                <a href="#top" class="menu-item">Home</a>
+                <a href="#navigating-whitespace" class="menu-item">Expertise</a>
+                <a href="#leadership-approach" class="menu-item">Leadership</a>
+                <a href="#ai-ml-design" class="menu-item">AI/ML</a>
+                <a href="#accolades" class="menu-item">Accolades</a>
+                <a href="#trusted-leaders" class="menu-item">Customers</a>
+                <a href="#recent-thoughts" class="menu-item">Thoughts</a>
+                <a href="https://momentumdesignlab.com" target="_blank" rel="noopener noreferrer" class="menu-item">
+                    Portfolio
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/davidthomson/details/recommendations/" target="_blank" rel="noopener noreferrer" class="menu-item">
+                    Recommendations
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                </a>
+            </div>
+            <div class="social-icons flex justify-end space-x-4 mt-4">
+                <a href="https://www.linkedin.com/in/davidthomson/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#A7DAE9] transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="https://davidthomson.substack.com/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#A7DAE9] transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+  
+  <script>
+    // Award Winning Team Sankey Diagram
+    document.addEventListener('DOMContentLoaded', function() {
+      const createSankeyDiagram = (containerId, width, height) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        // Clear any existing content in the container
+        container.innerHTML = '';
+
+        const svg = d3.select(`#${containerId}`)
+          .append("svg")
+          .attr("width", '100%')
+          .attr("height", height)
+          .attr("viewBox", `0 0 ${width} ${height}`)
+          .attr("preserveAspectRatio", "xMidYMid meet");
+
+        const sankey = d3.sankey()
+          .nodeWidth(width * 0.02)
+          .nodePadding(height * 0.01)
+          .extent([[1, 1], [width - 1, height - 1]])
+          .nodeAlign(d3.sankeyCenter);
+
+        const data = {
+          nodes: [
+            {name: "Award Winning Team"},
+            {name: "Team Members"},
+            {name: "Profile Types"},
+            {name: "Design Methodologies"},
+            {name: "Project Types"},
+            {name: "Project Variables"},
+            {name: "Designers"},
+            {name: "UX Managers"},
+            {name: "Product Managers"},
+            {name: "M-shaped"},
+            {name: "T-shaped"},
+            {name: "S-shaped"},
+            {name: "X-shaped"},
+            {name: "I-shaped"},
+            {name: "UI Prototyping"},
+            {name: "User-centered Design"},
+            {name: "Design Thinking"},
+            {name: "Cognitive Design"},
+            {name: "Greenfield"},
+            {name: "Brownfield"},
+            {name: "Time Constraints"},
+            {name: "Budgets"},
+            {name: "Scope"},
+            {name: "Resource Availability"}
+          ],
+          links: [
+            {source: 0, target: 1, value: 1},
+            {source: 0, target: 2, value: 1},
+            {source: 0, target: 3, value: 1},
+            {source: 0, target: 4, value: 1},
+            {source: 0, target: 5, value: 1},
+            {source: 1, target: 6, value: 1},
+            {source: 1, target: 7, value: 1},
+            {source: 1, target: 8, value: 1},
+            {source: 2, target: 9, value: 1},
+            {source: 2, target: 10, value: 1},
+            {source: 2, target: 11, value: 1},
+            {source: 2, target: 12, value: 1},
+            {source: 2, target: 13, value: 1},
+            {source: 3, target: 14, value: 1},
+            {source: 3, target: 15, value: 1},
+            {source: 3, target: 16, value: 1},
+            {source: 3, target: 17, value: 1},
+            {source: 4, target: 18, value: 1},
+            {source: 4, target: 19, value: 1},
+            {source: 5, target: 20, value: 1},
+            {source: 5, target: 21, value: 1},
+            {source: 5, target: 22, value: 1},
+            {source: 5, target: 23, value: 1}
+          ]
+        };
+
+        const { nodes, links } = sankey(data);
+
+        const colors = [
+          '#ecc439', '#e8ba19', '#f5d97d', '#f3d97d', '#f7e4a1', '#f0cf5b',
+          '#f9fbfc', '#fcfef7', '#fcfdfd', '#f0f6f8', '#f3f9fb', '#c8eaf4',
+          '#d9f2fa', '#89cade', '#b7e2ef', '#a7dae9', '#99acbf',
+          '#ebf5ff', '#c0cfdf', '#99acbf',
+          '#ebfaff', '#d9f2fa', '#c8eaf4', '#b7e2ef', '#a7dae9', '#98d2e4', '#89cade',
+          '#ebf5ff', '#cde1f3', '#b1cde6', '#97bada', '#7fa8ce', '#6897c1', '#5487b5',
+          '#f7fdff', '#f5fbfd', '#f3f9fb', '#f1f7fa', '#f0f6f8', '#eef4f6', '#ecf2f4',
+          '#fcfeff', '#fbfdfe', '#fbfdfe', '#fafcfd', '#f9fbfc', '#f9fbfc', '#f8fafb',
+          '#fffaeb', '#fbefb5', '#f7e4a1', '#f3d97d', '#f0cf5b', '#ecc439', '#e8ba19'
+        ];
+
+        svg.append("g")
+          .selectAll("rect")
+          .data(nodes)
+          .join("rect")
+          .attr("x", d => d.x0)
+          .attr("y", d => d.y0)
+          .attr("height", d => d.y1 - d.y0)
+          .attr("width", d => d.x1 - d.x0)
+          .attr("fill", (d, i) => colors[i % colors.length])
+          .append("title")
+          .text(d => `${d.name}\n${d.value}`);
+
+        svg.append("g")
+          .attr("fill", "none")
+          .selectAll("g")
+          .data(links)
+          .join("path")
+          .attr("d", d3.sankeyLinkHorizontal())
+          .attr("stroke", (d, i) => colors[i % colors.length])
+          .attr("stroke-width", d => Math.max(1, d.width))
+          .attr("opacity", 0.5)
+          .append("title")
+          .text(d => `${d.source.name} → ${d.target.name}\n${d.value}`);
+
+        const fontSize = Math.max(8, Math.min(12, width * 0.02));
+
+        svg.append("g")
+          .style("font", `${fontSize}px sans-serif`)
+          .selectAll("text")
+          .data(nodes)
+          .join("text")
+          .attr("x", d => d.x0 < width / 2 ? d.x1 + width * 0.01 : d.x0 - width * 0.01)
+          .attr("y", d => (d.y1 + d.y0) / 2)
+          .attr("dy", "0.35em")
+          .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
+          .text(d => d.name)
+          .attr("fill", "#ffffff");
+      };
+
+      const createDiagrams = () => {
+        const desktopContainer = document.getElementById('sankey-diagram-desktop');
+        const mobileContainer = document.getElementById('sankey-diagram-mobile');
+
+        if (window.innerWidth >= 768 && desktopContainer) {
+          const desktopWidth = desktopContainer.clientWidth;
+          const desktopHeight = desktopContainer.clientHeight;
+          createSankeyDiagram('sankey-diagram-desktop', desktopWidth, desktopHeight);
+        } else if (window.innerWidth < 768 && mobileContainer) {
+          const mobileWidth = mobileContainer.clientWidth;
+          const mobileHeight = 400; // Set a fixed height for mobile
+          createSankeyDiagram('sankey-diagram-mobile', mobileWidth, mobileHeight);
+        }
+      };
+
+      // Initial creation of diagrams
+      createDiagrams();
+
+      // Handle window resize
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          createDiagrams();
+        }, 250);
+      });
+    });
+  </script>
+  <section class="py-12 md:py-24 bg-gradient-to-bl from-[#23313F] via-[#30485E] px-4 sm:px-6" id="ai-ml-design">
+    <div class="container mx-auto">
+      <h2 class="text-3xl md:text-4xl lg:text-[2.8rem] font-bold mb-8 md:mb-12 text-transparent bg-clip-text bg-gradient-to-b from-[#A7DAE9] to-[#97BADA] custom-h2">
+        Designing For and With Artificial Intelligence
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-12 mb-8 md:mb-12">
+        <p class="col-span-1 md:col-span-10 col-start-1 text-base md:text-lg text-white">
+          Early exposure to emerging technologies like sentiment streaming, NLP, knowledge graphs, LLMs, predictive AI, and RPA before they became mainstream was gained by operating a studio in Silicon Valley. This experience, fueled by a passion for exploring what's next in technology, led to spearheading two key innovations since the dawn of advanced reasoning via GenAI: Cognitive Design, a design methodology which aligns interfaces with users' mental processes, and Synthetic Design framework, which leverages GenAI for rapid, data-driven product development.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-y-12 gap-x-8 md:gap-x-24" id="ai-approaches-container">
+        <!-- AI Approaches will be dynamically inserted here -->
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-24 bg-[#1A2633] px-4 sm:px-6" id="accolades">
+    <div class="container mx-auto">
+      <h2 class="text-3xl md:text-4xl lg:text-[2.8rem] font-bold mb-8 md:mb-12 text-transparent bg-clip-text bg-gradient-to-b from-[#A7DAE9] to-[#97BADA]">
+        Accolades & Recognition
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16" id="accolades-container">
+        <!-- Accolades will be dynamically inserted here -->
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const approaches = [
+        {
+          title: "Craftsmanship",
+          description: "Building trust in processes is paramount in leadership. Emphasis is placed on mastery of tools, a deep understanding of data, and the value of individual intuition. This commitment to excellence drives the delivery of high-quality products that exceed both user expectations and business objectives."
+        },
+        {
+          title: "Empathy",
+          description: "The user is always the starting point. By spearheading thorough experience gathering through interviews, research, and testing, a customized, cumulative process is championed. This method uncovers deeper truths that inform designs and drive innovative solutions."
+        },
+        {
+          title: "Collaboration",
+          description: "Co-creation with clients and team members forms the cornerstone of my leadership style. I cultivate an environment of mutual learning and growth, encouraging knowledge sharing and cross-functional teamwork. This approach enables the development of more holistic and effective solutions."
+        },
+        {
+          title: "Curiosity",
+          description: "Leveraging our collective past experiences and promoting ongoing learning are key elements of my leadership. By directing our inquisitiveness towards discovering better approaches for future challenges, I keep our team at the forefront of industry trends and innovation."
+        }
+      ];
+
+      const container = document.getElementById('approaches-container');
+      approaches.forEach((approach, index) => {
+        const article = document.createElement('article');
+        article.setAttribute('key', index);
+
+        const title = document.createElement('h3');
+        title.className = 'text-[1.25rem] font-semibold mb-4 text-white';
+        title.textContent = approach.title;
+
+        const description = document.createElement('p');
+        description.className = 'text-white';
+        description.textContent = approach.description;
+
+        article.appendChild(title);
+        article.appendChild(description);
+        container.appendChild(article);
+      });
+
+      const aiApproaches = [
+        {
+          title: "Cognitive Design",
+          description: "The design methodology evolves from traditional design thinking, focusing on the mental processes users engage in when interacting with invisible, multimodal systems like voice assistants or gesture-based interfaces. By aligning interfaces with users' thought processes, it reduces cognitive load, making interactions more intuitive and seamless across different platforms and devices. It emphasizes AI-human collaboration and long-term adaptability, aiming to create AI systems that naturally extend human cognition.",
+          link: "https://assets.website-files.com/63bba9873fa686465ba767d8/654db74265088acbde8a9cc7_Cognitive%20Design%20Approach%20Momentum%20Design%20Lab.pdf"
+        },
+        {
+          title: "Synthetic Design",
+          description: "This marks a shift in product development framework, using GenAI for large-scale synthetic research to quickly identify market problems and opportunities. It combines synthetic and real-world data to provide accurate insights, streamlining the design lifecycle from ideation to brand strategy. Acting as a semi-automated copilot, it enables rapid concept generation, insight synthesis, and efficient design processes, helping teams create innovative products that meet evolving user needs and market demands."
+        }
+      ];
+
+      const aiContainer = document.getElementById('ai-approaches-container');
+      aiApproaches.forEach((approach, index) => {
+        const div = document.createElement('div');
+
+        const title = document.createElement('h3');
+        title.className = 'text-2xl font-semibold mb-4 text-white';
+        title.textContent = approach.title;
+
+        const description = document.createElement('p');
+        description.className = 'text-white mb-6';
+        description.textContent = approach.description;
+
+        div.appendChild(title);
+        div.appendChild(description);
+
+        if (approach.link) {
+          const link = document.createElement('a');
+          link.href = approach.link;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.className = "custom-centered-button";
+          
+          const textSpan = document.createElement('span');
+          textSpan.textContent = "Read the white paper";
+          link.appendChild(textSpan);
+
+          const arrowIcon = document.createElement('span');
+          arrowIcon.className = "arrow-icon";
+          arrowIcon.innerHTML = "→";
+          link.appendChild(arrowIcon);
+
+          div.appendChild(link);
+        }
+
+        aiContainer.appendChild(div);
+      });
+
+      const accolades = [
+        {
+          title: "Awards & Recognition",
+          description: "Led teams have won the IF Design Award, multiple IDC UX Design Awards, Web Excellence Awards, and recognition from the ABA & IBA, incl. Management Team of the Year."
+        },
+        {
+          title: "Top Global Agency Rankings",
+          description: "Led Momentum Design Lab to the #1 UX Agency ranking on Clutch.co for nine years with 90+ reviews and 4.9/5.0★ Referral Rating.",
+          link: "#"
+        },
+        {
+          title: "32 of US & Global Fortune 100",
+          description: "Worked with 13% of the Fortune 500 and 32 of the Fortune 100, helping these leaders innovate."
+        },
+        {
+          title: "$110M in Revenue",
+          description: "Generated $65M in direct revenue and an additional $45M through influenced revenue and partnerships."
+        },
+        {
+          title: "Speaking, Paneling, Judging",
+          description: "Keynote at Web Summit 2023 on Cognitive Design, panelist at HITS: Spring 2024 on Inclusivity & AI in advertising, co-organizer for Enterprise UX SF, Austin, NYC, and judge at several hackathons."
+        },
+        {
+          title: "Over $50B In Acquisitions",
+          description: "Teams' work has contributed to over $50 billion in acquisitions, including M&A, IPOs, and other major transactions, driving strategic growth and successful exits."
+        }
+      ];
+
+      const accoladesContainer = document.getElementById('accolades-container');
+      accolades.forEach((accolade, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex flex-col';
+
+        const title = document.createElement('h3');
+        title.className = 'text-xl font-semibold text-white text-left mb-4'; // Added text-left class and margin-bottom
+        title.textContent = accolade.title;
+
+        const description = document.createElement('p');
+        description.className = 'text-white mb-2';
+        description.textContent = accolade.description;
+
+        div.appendChild(title);
+        div.appendChild(description);
+
+        if (accolade.link) {
+          const link = document.createElement('a');
+          link.href = accolade.link;
+          link.className = 'text-sm text-[#A7DAE9] hover:underline';
+          link.textContent = 'Read More';
+          div.appendChild(link);
+        }
+
+        accoladesContainer.appendChild(div);
+      });
+    });
+  </script>
+
+  <!-- Trusted By Leaders Section -->
+<section class="py-12 md:py-16 bg-gradient-to-br from-[#23313F] via-[#30485E] px-4 sm:px-6" id="trusted-leaders">
+  <div class="container mx-auto">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-[2.8rem] font-bold mb-8 sm:mb-12 text-center text-transparent bg-clip-text bg-gradient-to-b from-[#A7DAE9] to-[#97BADA] custom-h2">
+      Trusted by Industry Leaders & 100s of Startups
+    </h2>
+    <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 md:gap-2.5">
+      <script>
+        const gridLogos = Array.from({ length: 180 }, (_, index) => ({
+          src: `images/${String(index + 1).padStart(2, '0')}.png`,
+          alt: `Logo ${index + 1}`
+        }));
+        gridLogos.forEach((logo, index) => {
+          document.write(`
+            <div key=${index} class="flex items-center justify-center bg-[#253544] rounded-[5px] overflow-hidden aspect-[86/29]">
+              <div class="w-full h-full relative flex items-center justify-center p-1 sm:p-2">
+                <img src="${logo.src}" alt="${logo.alt}" class="object-contain max-h-full w-auto" />
+              </div>
+            </div>
+          `);
+        });
+      </script>
+    </div>
+  </div>
+</section>
+
+  <!-- Recent Thoughts Section -->
+<section class="py-12 md:py-24 bg-[#23313F] px-4 sm:px-6" id="recent-thoughts">
+  <div class="container mx-auto">
+    <h2 class="text-3xl md:text-4xl lg:text-[2.8rem] font-bold mb-8 md:mb-10 text-transparent bg-clip-text bg-gradient-to-b from-[#A7DAE9] to-[#97BADA] custom-h2">Recent Thoughts</h2>
+    <ul class="list-none p-0 space-y-4 md:space-y-6">
+      <script>
+        const thoughts = [
+          {
+            title: "Embracing Cognitive Design in the Age of Ambient Computing",
+            link: "https://thervr.substack.com/p/embracing-cognitive-design-in-the?r=33a01o&utm_campaign=post&utm_medium=web&triedRedirect=true"
+          },
+          {
+            title: "Where Does Product Design Go From Here?",
+            link: "https://thervr.substack.com/p/where-does-product-design-go-from"
+          },
+          {
+            title: "Gartner GenAI SIG: Perspectives on Cognitive Design",
+            link: "https://www.momentumdesignlab.com/insights/gartner-genai-sig-momentum-htec-perspectives-on-cognitive-design"
+          },
+          {
+            title: "Introducing a Cognitive Design Framework",
+            link: "https://www.momentumdesignlab.com/insights/introducing-a-cognitive-design-framework"
+          },
+          {
+            title: "What Really is AI-Driven Experience Design? (Reloaded)",
+            link: "https://www.momentumdesignlab.com/insights/what-really-is-ai-driven-experience-design-reloaded"
+          },
+          {
+            title: "Our AI Manifesto and StepFrame AI",
+            link: "https://www.momentumdesignlab.com/insights/ai-manifesto-stepframe-ai"
+          },
+          {
+            title: "Charting an Ethical Course for AI: How Businesses Can Responsibly Augment Human Potential",
+            link: "https://www.momentumdesignlab.com/insights/charting-an-ethical-course-for-ai-how-businesses-can-responsibly-augment-human-potential"
+          },
+          {
+            title: "The AI Opportunity: Building Human-Centered Futures",
+            link: "https://www.momentumdesignlab.com/insights/the-ai-opportunity-building-human-centered-futures"
+          }
+        ];
+        thoughts.forEach((thought, index) => {
+          document.write(`
+            <li key=${index} class="h-auto md:h-15">
+              <a href="${thought.link}" target="_blank" rel="noopener noreferrer" class="block bg-[#2A3E55] p-4 rounded-lg text-base md:text-lg text-white hover:bg-[#3A5976] transition-colors duration-300 h-full flex items-center">
+                ${thought.title}
+              </a>
+            </li>
+          `);
+        });
+      </script>
+    </ul>
+  </div>
+</section>
+
+<footer class="bg-[#1A2633] text-white py-8 md:py-12 px-4 sm:px-6">
+    <div class="container mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0 text-center md:text-left">
+          <h2 class="text-xl md:text-2xl font-bold mb-2">David Thomson</h2>
+          <p class="text-sm text-gray-400">Global Design & Innovation Leader</p>
+          <p class="text-sm text-gray-400 mt-2">&copy; <span id="currentYear"></span> All rights reserved.</p>
+        </div>
+        <nav class="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 mb-6 md:mb-0">
+          <a href="#top" class="hover:text-[#A7DAE9] transition-colors duration-300">Home</a>
+          <a href="#navigating-whitespace" class="hover:text-[#A7DAE9] transition-colors duration-300">Expertise</a>
+          <a href="#leadership-approach" class="hover:text-[#A7DAE9] transition-colors duration-300">Leadership</a>
+          <a href="#ai-ml-design" class="hover:text-[#A7DAE9] transition-colors duration-300">AI/ML</a>
+          <a href="#accolades" class="hover:text-[#A7DAE9] transition-colors duration-300">Accolades</a>
+          <a href="#trusted-leaders" class="hover:text-[#A7DAE9] transition-colors duration-300">Customers</a>
+          <a href="#recent-thoughts" class="hover:text-[#A7DAE9] transition-colors duration-300">Thoughts</a>
+          <a href="https://momentumdesignlab.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#A7DAE9] transition-colors duration-300 flex items-center">
+            Portfolio
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/davidthomson/details/recommendations/" target="_blank" rel="noopener noreferrer" class="hover:text-[#A7DAE9] transition-colors duration-300 flex items-center">
+            Recommendations
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </a>
+        </nav>
+        <div class="flex space-x-4">
+          <a href="https://www.linkedin.com/in/davidthomson/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#A7DAE9] transition-colors duration-300">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://thervr.substack.com/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#A7DAE9] transition-colors duration-300">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const footerLinks = document.querySelectorAll('footer a[href^="#"]');
+      
+      footerLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+  </script>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/framer-motion"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('radarSkillsChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: [
+          'Global Design Leadership', 'Innovation Leadership', 'Executive Leadership', 'Business Development',
+          'Mergers and Acquisitions', 'Enterprise Modernization', 'Design Strategy', 'Brand Strategy',
+          'Technology Strategy', 'AI & ML Strategy', 'Go-to-Market Strategy', 'CX Strategy', 'Strategic Advisory'
+        ],
+        datasets: [{
+          label: 'Skill Level',
+          data: [4.7, 4.6, 4.5, 4.8, 3.9, 4.1, 4.0, 5.0, 3.9, 3.9, 4.2, 4.8, 4.7],
+          backgroundColor: 'rgba(167, 218, 233, 0.4)',
+          borderColor: 'rgba(151, 186, 218, 1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(232, 186, 25, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(232, 186, 25, 1)'
+        }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      r: {
+        angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+        grid: { color: 'rgba(255, 255, 255, 0.2)' },
+        pointLabels: {
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: { size: 10, family: "'Plus Jakarta Sans', sans-serif" }
+        },
+        ticks: {
+          color: 'rgba(255, 255, 255, 0.7)',
+          backdropColor: 'transparent',
+          stepSize: 1,
+          max: 5,
+          min: 0,
+          font: { size: 9 }
+        },
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        titleColor: 'rgba(255, 255, 255, 1)',
+        bodyColor: 'rgba(255, 255, 255, 1)',
+        titleFont: { size: 14, family: "'Plus Jakarta Sans', sans-serif" },
+        bodyFont: { size: 12, family: "'Plus Jakarta Sans', sans-serif" },
+        callbacks: {
+          label: function (context) {
+            return `Skill Level: ${context.raw}`;
+          }
+        }
+      }
+    }
+  }
+});
+});
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const trustedByLeadersSection = document.getElementById('trusted-by-leaders');
+    const recentThoughtsSection = document.querySelector('section.mt-24.min-h-screen.flex.items-center.justify-center.bg-[#23313F]');
+    recentThoughtsSection.parentNode.insertBefore(trustedByLeadersSection, recentThoughtsSection);
+  });
+</script>
+
+<!-- Add this script at the end of the body -->
+    <script>
+         // Set the current year for the copyright
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const menu = document.getElementById('menu');
+        const header = document.querySelector('.header');
+        const headerText = document.getElementById('header-text');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        function openMenu() {
+            menu.classList.add('active');
+        }
+
+        function closeMenu() {
+            menu.classList.remove('active');
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (e.currentTarget.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = e.currentTarget.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        closeMenu();
+                        setTimeout(() => {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }, 150);
+                    }
+                } else {
+                    closeMenu();
+                }
+            });
+        });
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    header.style.backgroundColor = 'rgba(26, 38, 51, 0.9)';
+                    headerText.style.opacity = '1';
+                } else {
+                    header.style.backgroundColor = 'rgba(26, 38, 51, 0.9)';
+                    headerText.style.opacity = '0';
+                }
+            });
+        });
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+    document.getElementById('menu').classList.add('active');
+    
+    // Reset the animation for social icons
+    const socialIcons = document.querySelector('.menu .social-icons');
+    socialIcons.style.animation = 'none';
+    socialIcons.offsetHeight; // Trigger reflow
+    socialIcons.style.animation = null;
+});
+    </script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+</html>
